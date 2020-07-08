@@ -46,6 +46,10 @@ const PokemonCard = ({ pokemon }) => {
 
           <table className="card__stats">
             <tbody>
+              <tr>
+                <th>ID</th>
+                <td>{id}</td>
+              </tr>
               {stats.map(({ base_stat, stat }, index) => {
                 return (
                   <tr key={index}>

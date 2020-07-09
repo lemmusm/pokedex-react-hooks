@@ -46,8 +46,6 @@ const UseStateComponent = () => {
   const handleOnChange = (e) => {
     const value = e.target.value;
 
-    // isNaN(value) ? '<Error error={error} />' : showRandomPokemon();
-
     value.length > 0
       ? getPokemon(e.target.value)
           .then((pokemon) => {

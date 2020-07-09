@@ -1,21 +1,39 @@
-import React, { useState, useEffect } from 'react';
+import React, { useReducer, useEffect } from 'react';
 import Loader from './Loader';
 import PokemonCard from './PokemonCard';
 import Error from './Error';
 import Form from './Form';
 
-const UseStateComponent = () => {
-  const dataPokemon = {
-    id: 0,
-    name: '',
-    sprites: '',
-    types: [],
-    abilities: [],
-    stats: [],
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'SUCCESS':
+      return {
+        loading: false,
+        pokemon: action.payload,
+        error: '',
+      };
+    case 'ERROR':
+      return {
+        loading: false,
+        pokemon: {},
+        error: action.error,
+      };
+    default:
+      return state;
+  }
+};
+
+const UseReducerComponent = () => {
+  const initialState = {
+    pokemon: [],
+    loading: true,
+    error: '',
   };
-  const [pokemon, setPokemon] = useState(dataPokemon);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+
+  const [{ pokemon, loading, error }, dispatch] = useReducer(
+    reducer,
+    initialState
+  );
 
   useEffect(() => {
     showRandomPokemon();
@@ -29,17 +47,14 @@ const UseStateComponent = () => {
   };
 
   const showRandomPokemon = () => {
-    setLoading(true);
+    // setLoading(true);
     let randomPokemonId = Math.round(Math.random() * 807);
     getPokemon(randomPokemonId)
       .then((pokemon) => {
-        setLoading(false);
-        setPokemon(pokemon);
-        setError('');
+        dispatch({ type: 'SUCCESS', payload: pokemon });
       })
       .catch((error) => {
-        setLoading(false);
-        setError('Error to get data');
+        dispatch({ type: 'ERROR', error: 'Error to get data' });
       });
   };
 
@@ -49,23 +64,19 @@ const UseStateComponent = () => {
     value.length > 0
       ? getPokemon(e.target.value)
           .then((pokemon) => {
-            setLoading(false);
-            setPokemon(pokemon);
-            setError('');
+            dispatch({ type: 'SUCCESS', payload: pokemon });
           })
           .catch((error) => {
             isNaN(value)
-              ? setError('Only numbers is accepted')
-              : setError('Pokemon ID not found!');
-            setPokemon(dataPokemon);
-            setLoading(false);
+              ? dispatch({ type: 'ERROR', error: 'Only numbers is accepted' })
+              : dispatch({ type: 'ERROR', error: 'Pokemon ID not found!' });
           })
       : showRandomPokemon();
   };
 
   return (
     <>
-      <h1>useState</h1>
+      <h1>useReducer</h1>
       <button className="btn" onClick={showRandomPokemon}>
         SHOW RANDOM POKEMON
       </button>
@@ -82,4 +93,4 @@ const UseStateComponent = () => {
   );
 };
 
-export default UseStateComponent;
+export default UseReducerComponent;

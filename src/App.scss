@@ -189,6 +189,9 @@ h5 {
   font-weight: 400;
 }
 
+.row {
+  grid-template-columns: repeat(2, 1fr);
+}
 .card {
   display: inline-block;
   width: 300px;
@@ -441,5 +444,25 @@ h5 {
     .card__type {
       background: #42275a;
     }
+  }
+}
+.row {
+  width: 100%;
+  margin: 0 auto;
+  display: grid;
+  grid-gap: 1rem;
+  grid-template-columns: repeat(2, 1fr);
+  align-items: center;
+}
+
+.column {
+  align-self: center;
+  width: 100%;
+}
+
+/* Screen larger than 600px? 2 column */
+@media (min-width: 1px) and (max-width: 800px) {
+  .row {
+    grid-template-columns: repeat(1, 1fr);
   }
 }

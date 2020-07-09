@@ -5,14 +5,15 @@ import Error from './Error';
 import Form from './Form';
 
 const UseStateComponent = () => {
-  const [pokemon, setPokemon] = useState({
+  const dataPokemon = {
     id: 0,
     name: '',
     sprites: '',
     types: [],
     abilities: [],
     stats: [],
-  });
+  };
+  const [pokemon, setPokemon] = useState(dataPokemon);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -44,7 +45,10 @@ const UseStateComponent = () => {
 
   const handleOnChange = (e) => {
     const value = e.target.value;
-    value.length > 0 || isNaN(value)
+
+    // isNaN(value) ? '<Error error={error} />' : showRandomPokemon();
+
+    value.length > 0
       ? getPokemon(e.target.value)
           .then((pokemon) => {
             setLoading(false);
@@ -52,9 +56,11 @@ const UseStateComponent = () => {
             setError('');
           })
           .catch((error) => {
-            setPokemon([]);
+            isNaN(value)
+              ? setError('Only numbers is accepted')
+              : setError('Pokemon ID not found!');
+            setPokemon(dataPokemon);
             setLoading(false);
-            setError('Error to get data');
           })
       : showRandomPokemon();
   };
@@ -67,8 +73,13 @@ const UseStateComponent = () => {
       </button>
       <h4 className="or"> OR </h4>
       <Form handleOnChange={handleOnChange} />
-      {loading ? <Loader /> : <PokemonCard pokemon={pokemon} />}
-      {error ? <Error error={error} /> : null}
+      {loading ? (
+        <Loader />
+      ) : !!error ? (
+        <Error error={error} />
+      ) : (
+        <PokemonCard pokemon={pokemon} />
+      )}
     </>
   );
 };

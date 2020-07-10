@@ -1,4 +1,5 @@
 import React, { useReducer, useEffect } from 'react';
+import { getPokemon } from '../helper/getPokemon';
 import Loader from './Loader';
 import PokemonCard from './PokemonCard';
 import Error from './Error';
@@ -39,12 +40,6 @@ const UseReducerComponent = () => {
     showRandomPokemon();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const getPokemon = async (pokeId) => {
-    const apiUrl = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokeId}`);
-    const res = await apiUrl.json();
-    return res;
-  };
 
   const showRandomPokemon = () => {
     // setLoading(true);

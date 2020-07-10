@@ -46,7 +46,7 @@ const UseStateComponent = () => {
   const handleOnChange = (e) => {
     const value = e.target.value;
 
-    value.length > 0
+    !!value
       ? getPokemon(e.target.value)
           .then((pokemon) => {
             setLoading(false);

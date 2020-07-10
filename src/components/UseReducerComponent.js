@@ -56,8 +56,8 @@ const UseReducerComponent = () => {
   const handleOnChange = (e) => {
     const value = e.target.value;
 
-    value.length > 0
-      ? getPokemon(e.target.value)
+    !!value
+      ? getPokemon(value)
           .then((pokemon) => {
             dispatch({ type: 'SUCCESS', payload: pokemon });
           })
